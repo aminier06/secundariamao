@@ -1,0 +1,657 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Instrumento de Acompañamiento a la Práctica Pedagógica</title>
+  <style>
+    :root {
+      --verde-oscuro: #7fb347;
+      --verde-medio: #a8cf72;
+      --verde-claro: #eaf4df;
+      --verde-tabla: #dfead6;
+      --borde: #8fae6f;
+      --texto: #222;
+      --blanco: #fff;
+      --gris: #f6f6f6;
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      font-family: "Times New Roman", serif;
+      color: var(--texto);
+      background: #f2f5ef;
+      padding: 18px;
+    }
+
+    .page {
+      max-width: 1100px;
+      margin: 0 auto;
+      background: var(--blanco);
+      padding: 24px;
+      border: 1px solid #d7dfcf;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+    }
+
+    .encabezado-institucional {
+      text-align: center;
+      line-height: 1.2;
+      margin-bottom: 10px;
+    }
+
+    .encabezado-institucional .pais { font-size: 14px; font-weight: bold; letter-spacing: .5px; }
+    .encabezado-institucional .ministerio { font-size: 14px; font-weight: bold; color: #284a8a; }
+    .encabezado-institucional .distrito { font-size: 20px; font-weight: bold; margin-top: 6px; }
+    .encabezado-institucional .nivel { font-size: 18px; font-weight: bold; }
+    .encabezado-institucional .tel { font-size: 14px; font-weight: bold; }
+
+    h1 {
+      text-align: center;
+      font-size: 26px;
+      margin: 18px 0 12px;
+    }
+
+    .proposito {
+      text-align: justify;
+      font-size: 17px;
+      line-height: 1.5;
+      margin-bottom: 14px;
+    }
+
+    .proposito b { font-size: 18px; }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+
+    .tabla-datos td,
+    .tabla-datos th,
+    .tabla-rubrica td,
+    .tabla-rubrica th,
+    .tabla-dialogo td,
+    .tabla-firmas td {
+      border: 1px solid var(--borde);
+      padding: 6px 8px;
+      vertical-align: top;
+    }
+
+    .etiqueta {
+      width: 28%;
+      background: #98cb4d;
+      font-weight: bold;
+      white-space: nowrap;
+    }
+
+    .campo input,
+    .campo textarea,
+    .campo select,
+    .respuesta textarea,
+    .obs-general textarea,
+    .obs-rubrica {
+      width: 100%;
+      border: none;
+      outline: none;
+      font-family: inherit;
+      font-size: 16px;
+      background: transparent;
+      resize: vertical;
+    }
+
+    .campo input,
+    .campo select {
+      min-height: 30px;
+    }
+
+    .subtitulo-bloque {
+      background: var(--verde-oscuro);
+      color: var(--blanco);
+      text-align: center;
+      font-weight: bold;
+      font-size: 17px;
+    }
+
+    .tanda-celda {
+      text-align: center;
+      font-size: 16px;
+    }
+
+    .tanda-opciones {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 0;
+    }
+
+    .tanda-opciones label {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      padding: 8px 4px;
+      border-right: 1px solid var(--borde);
+      min-height: 44px;
+    }
+
+    .tanda-opciones label:last-child { border-right: none; }
+
+    .fila-grado {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+    }
+
+    .fila-grado > div {
+      border-right: 1px solid var(--borde);
+      padding: 0;
+    }
+
+    .fila-grado > div:last-child { border-right: none; }
+
+    .mini-campo {
+      display: grid;
+      grid-template-columns: 120px 1fr;
+      min-height: 40px;
+    }
+
+    .mini-campo span {
+      font-weight: bold;
+      padding: 8px;
+      border-right: 1px solid var(--borde);
+      background: #f7faf2;
+    }
+
+    .mini-campo input,
+    .mini-campo select {
+      border: none;
+      padding: 8px;
+      outline: none;
+      font-family: inherit;
+      font-size: 16px;
+    }
+
+    .tabla-rubrica th {
+      background: #d7e5c8;
+      text-align: center;
+      font-size: 15px;
+    }
+
+    .tabla-rubrica td {
+      background: #eef5e8;
+    }
+
+    .tabla-rubrica tbody tr:nth-child(even) td {
+      background: #e3efd9;
+    }
+
+    .aspecto {
+      width: 58%;
+      font-size: 15px;
+      line-height: 1.3;
+    }
+
+    .puntuacion {
+      width: 4.5%;
+      text-align: center;
+      vertical-align: middle !important;
+    }
+
+    .puntuacion input[type="radio"] {
+      transform: scale(1.1);
+      cursor: pointer;
+    }
+
+    .observacion-col {
+      width: 19%;
+      background: #f9fbf7 !important;
+    }
+
+    .obs-rubrica {
+      min-height: 52px;
+    }
+
+    .seccion-titulo {
+      background: #8fc749;
+      font-weight: bold;
+      text-align: center;
+      font-size: 18px;
+    }
+
+    .pregunta {
+      font-size: 17px;
+      font-weight: bold;
+      margin-bottom: 6px;
+    }
+
+    .enunciado {
+      font-size: 16px;
+      margin-bottom: 8px;
+    }
+
+    .respuesta textarea {
+      min-height: 135px;
+    }
+
+    .obs-general {
+      margin-top: 14px;
+    }
+
+    .obs-general label {
+      display: block;
+      font-weight: bold;
+      font-size: 18px;
+      margin-bottom: 8px;
+    }
+
+    .obs-general textarea {
+      min-height: 180px;
+      border: 1px solid var(--borde);
+      padding: 10px;
+      background: #fff;
+    }
+
+    .tabla-firmas {
+      margin-top: 18px;
+      display: none;
+    }
+
+    .tabla-firmas td {
+      height: 90px;
+      vertical-align: bottom;
+      text-align: center;
+      width: 33.33%;
+    }
+
+    .linea-firma {
+      display: inline-block;
+      width: 90%;
+      border-top: 1px solid #333;
+      padding-top: 8px;
+      font-weight: bold;
+      font-size: 15px;
+    }
+
+    .acciones {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-top: 18px;
+      justify-content: center;
+    }
+
+    button {
+      border: none;
+      background: #5e8f2f;
+      color: white;
+      padding: 12px 18px;
+      font-size: 15px;
+      cursor: pointer;
+      border-radius: 6px;
+      font-family: inherit;
+    }
+
+    button.secundario {
+      background: #6b7280;
+    }
+
+    button:hover { opacity: .92; }
+
+    @media (max-width: 900px) {
+      .page { padding: 14px; }
+      .tanda-opciones { grid-template-columns: 1fr 1fr; }
+      .fila-grado { grid-template-columns: 1fr; }
+      .mini-campo { grid-template-columns: 110px 1fr; }
+      .aspecto { width: auto; }
+    }
+
+    @media print {
+      .tabla-firmas {
+        display: table !important;
+      }
+
+      body {
+        background: white;
+        padding: 0;
+      }
+
+      .page {
+        max-width: 100%;
+        margin: 0;
+        border: none;
+        box-shadow: none;
+        padding: 0;
+      }
+
+      .acciones {
+        display: none !important;
+      }
+
+      input, select, textarea {
+        -webkit-appearance: none;
+        appearance: none;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="page">
+    <div class="encabezado-institucional">
+      <div class="pais">GOBIERNO DE LA REPÚBLICA DOMINICANA</div>
+      <div class="ministerio">EDUCACIÓN</div>
+      <div class="distrito">DISTRITO 09-01- MAO</div>
+      <div class="nivel">Nivel Secundario</div>
+      <div class="tel">Tel. 809-572-7415</div>
+    </div>
+
+    <h1>Instrumento de Acompañamiento a la Práctica Pedagógica</h1>
+
+    <div class="proposito">
+      <b>Propósito:</b> Observar, registrar y retroalimentar la implementación de las secuencias didácticas en el aula,
+      con el fin de garantizar que las actividades se desarrollen de manera estructurada, coherente y centrada en el
+      aprendizaje de los estudiantes, promoviendo estrategias didácticas efectivas, el uso adecuado de recursos, la gestión
+      áulica inclusiva y la evaluación formativa. Además, busca identificar fortalezas, dificultades y oportunidades de mejora,
+      así como fomentar la reflexión y los compromisos del docente para fortalecer la práctica pedagógica y optimizar los
+      resultados de aprendizaje en las áreas objeto de las pruebas nacionales.
+    </div>
+
+    <form id="formularioAcompanamiento">
+      <table class="tabla-datos">
+        <tr>
+          <td class="etiqueta">Fecha/hora</td>
+          <td class="campo" colspan="3"><input type="datetime-local" name="fecha_hora"></td>
+        </tr>
+        <tr>
+          <td class="etiqueta">Regional</td>
+          <td class="campo"><select name="regional" id="regionalSelect"><option value="">Seleccione regional</option></select></td>
+          <td class="etiqueta">Distrito</td>
+          <td class="campo"><select name="distrito" id="distritoSelect"><option value="">Seleccione distrito</option></select></td>
+        </tr>
+        <tr>
+          <td class="etiqueta">Centro Educativo</td>
+          <td class="campo" colspan="3"><select name="centro_educativo" id="centroSelect"><option value="">Seleccione centro educativo</option></select></td>
+        </tr>
+        <tr>
+          <td class="etiqueta">Código</td>
+          <td class="campo" colspan="3"><input type="text" name="codigo"></td>
+        </tr>
+        <tr>
+          <td class="etiqueta">Docente acompañado</td>
+          <td class="campo" colspan="3"><input type="text" name="docente_acompanado"></td>
+        </tr>
+        <tr>
+          <td class="etiqueta">Asignatura</td>
+          <td class="campo" colspan="3">
+            <select name="asignatura">
+              <option value="">Seleccione</option>
+              <option value="Lengua Española">Lengua Española</option>
+              <option value="Matemática">Matemática</option>
+              <option value="Ciencias Sociales">Ciencias Sociales</option>
+              <option value="Ciencias de la Naturaleza">Ciencias de la Naturaleza</option>
+              <option value="Inglés">Inglés</option>
+              <option value="Francés">Francés</option>
+              <option value="Educación Artística">Educación Artística</option>
+              <option value="Educación Física">Educación Física</option>
+              <option value="Formación Integral Humana y Religiosa">Formación Integral Humana y Religiosa</option>
+              <option value="Curso optativo">Curso optativo</option>
+              <option value="Optativa">Optativa</option>
+            </select>
+          </td>
+        </tr>
+        <tr>
+          <td class="etiqueta">Coordinador</td>
+          <td class="campo" colspan="3"><input type="text" name="coordinador"></td>
+        </tr>
+        <tr>
+          <td class="subtitulo-bloque" colspan="4">Tanda</td>
+        </tr>
+        <tr>
+          <td class="tanda-celda" colspan="4" style="padding:0;">
+            <div class="tanda-opciones">
+              <label><input type="radio" name="tanda" value="JEE"> JEE</label>
+              <label><input type="radio" name="tanda" value="Matutino"> Matutino</label>
+              <label><input type="radio" name="tanda" value="Vespertino"> Vespertino</label>
+              <label><input type="radio" name="tanda" value="Nocturno"> Nocturno</label>
+            </div>
+          </td>
+        </tr>
+        <tr>
+          <td colspan="4" style="padding:0;">
+            <div class="fila-grado">
+              <div>
+                <div class="mini-campo">
+                  <span>Grado</span>
+                  <select name="grado">
+                    <option value="">Seleccione</option>
+                    <option value="Primero">Primero</option>
+                    <option value="Segundo">Segundo</option>
+                    <option value="Tercero">Tercero</option>
+                    <option value="Cuarto">Cuarto</option>
+                    <option value="Quinto">Quinto</option>
+                    <option value="Sexto">Sexto</option>
+                  </select>
+                </div>
+              </div>
+              <div>
+                <div class="mini-campo">
+                  <span>Sección</span>
+                  <select name="seccion">
+                    <option value="">Seleccione</option>
+                    <option value="A">A</option>
+                    <option value="B">B</option>
+                    <option value="C">C</option>
+                    <option value="D">D</option>
+                    <option value="E">E</option>
+                    <option value="F">F</option>
+                    <option value="G">G</option>
+                    <option value="H">H</option>
+                    <option value="I">I</option>
+                    <option value="J">J</option>
+                  </select>
+                </div>
+              </div>
+              <div>
+                <div class="mini-campo">
+                  <span>Matrícula</span>
+                  <input type="number" min="0" name="matricula">
+                </div>
+              </div>
+            </div>
+          </td>
+        </tr>
+      </table>
+
+      <table class="tabla-rubrica" style="margin-top:16px;">
+        <thead>
+          <tr>
+            <th colspan="7" class="subtitulo-bloque">Escala estimativa para valorar la práctica pedagógica:<br>4-Excelente 3-Bueno 2-Regular 1-Deficiente 0- No aplica</th>
+          </tr>
+          <tr>
+            <th>Aspectos observados en la práctica docente</th>
+            <th>4</th>
+            <th>3</th>
+            <th>2</th>
+            <th>1</th>
+            <th>0</th>
+            <th>Observación</th>
+          </tr>
+        </thead>
+        <tbody id="rubricaBody"></tbody>
+      </table>
+
+      <table class="tabla-dialogo" style="margin-top:22px;">
+        <tr>
+          <td class="seccion-titulo">Diálogo Reflexivo del acompañamiento</td>
+        </tr>
+        <tr>
+          <td>
+            <div class="pregunta">1. Dificultades en la implementación de las secuencias:</div>
+            <div class="enunciado">¿Ha tenido alguna dificultad en la implementación de las secuencias didácticas? Especifique cuál:</div>
+            <div class="respuesta"><textarea name="dificultades"></textarea></div>
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <div class="pregunta">2. Fortalezas identificadas:</div>
+            <div class="enunciado">¿Cuáles fortalezas ha identificado en su implementación?</div>
+            <div class="respuesta"><textarea name="fortalezas"></textarea></div>
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <div class="pregunta">3. Efectividad de las actividades:</div>
+            <div class="enunciado">¿Las actividades propuestas en las secuencias han permitido facilitar la comprensión de los aprendizajes esperados?</div>
+            <div class="respuesta"><textarea name="efectividad"></textarea></div>
+          </td>
+        </tr>
+      </table>
+
+      <div class="obs-general">
+        <label for="observaciones_generales">Observaciones generales:</label>
+        <textarea id="observaciones_generales" name="observaciones_generales"></textarea>
+      </div>
+
+      <table class="tabla-firmas">
+        <tr>
+          <td><span class="linea-firma">Docente Acompañado</span></td>
+          <td><span class="linea-firma">Coordinador pedagógico</span></td>
+          <td><span class="linea-firma">Firma del Técnico Distrital acompañante</span></td>
+        </tr>
+        <tr>
+          <td colspan="3"><span class="linea-firma">Firma del director y sello del centro</span></td>
+        </tr>
+      </table>
+
+      <div class="acciones">
+        <button type="button" onclick="window.print()">Imprimir / Guardar PDF</button>
+        <button type="reset" class="secundario">Limpiar formulario</button>
+      </div>
+    </form>
+  </div>
+
+  <script>
+    const aspectos = [
+      'El docente desarrolla las actividades en el orden y con la estructura prevista.',
+      'Realiza las adaptaciones necesarias al contexto sin alterar la esencia de la secuencia.',
+      'Respeta los tiempos sugeridos para cada momento (inicio, desarrollo, cierre).',
+      'Cumple con las consignas de producción y reflexión establecidas en el material.',
+      'El docente dispone de los textos, fichas, imágenes u otros insumos de la secuencia.',
+      'Se utilizan de manera pertinente los recursos digitales o impresos sugeridos.',
+      'Se adapta el uso de recursos a las condiciones reales del aula (disponibilidad tecnológica, espacio, etc.).',
+      'Orienta el trabajo individual y grupal conforme a lo indicado en la secuencia.',
+      'Formula preguntas que favorecen la reflexión y el análisis.',
+      'Retroalimenta durante las actividades, aclarando dudas y guiando el proceso.',
+      'Promueve la participación de todos los estudiantes.',
+      'Mantiene un clima de respeto, orden y colaboración.',
+      'Administra el tiempo de manera adecuada para completar la actividad.',
+      'Organiza los grupos o parejas conforme a lo sugerido y garantiza la inclusión.',
+      'Atiende a la diversidad (ritmos de aprendizaje, participación equitativa).',
+      'Establece normas claras para el trabajo y la convivencia en el aula.',
+      'Registra evidencias de los aprendizajes (cuadernos, producciones, fichas, intervenciones orales).',
+      'Aplica instrumentos de evaluación acorde a las actividades que desarrolla.',
+      'Ofrece retroalimentación clara y orientadora al finalizar las actividades.',
+      'Ajusta sobre la marcha en función de los avances o dificultades de los estudiantes.'
+    ];
+
+    const regionalesDistritos = {
+      "01 - BARAHONA": ["0101 - PEDERNALES","0102 - ENRIQUILLO","0103 - BARAHONA","0104 - CABRAL","0105 - VICENTE NOBLE"],
+      "02 - SAN JUAN DE LA MAGUANA": ["0201 - COMENDADOR","0202 - PEDRO SANTANA","0203 - LAS MATAS DE FARFAN","0204 - EL CERCADO","0205 - SAN JUAN ESTE","0206 - SAN JUAN OESTE","0207 - HONDO VALLE"],
+      "03 - AZUA": ["0301 - AZUA","0302 - PADRE DE LAS CASAS","0303 - SAN JOSE DE OCOA","0304 - BANI","0305 - NIZAO"],
+      "04 - SAN CRISTOBAL": ["0401 - CAMBITA GARABITOS","0402 - SAN CRISTOBAL NORTE","0403 - SAN CRISTOBAL SUR","0404 - VILLA ALTAGRACIA","0405 - YAGUATE","0406 - HAINA","0407 - SAN GREGORIO DE NIGUA"],
+      "05 - SAN PEDRO DE MACORIS": ["0501 - SAN PEDRO DE MACORIS ESTE","0502 - SAN PEDRO DE MACORIS OESTE","0503 - LA ROMANA","0504 - HATO MAYOR","0505 - SABANA DE LA MAR","0506 - CONSUELO","0507 - SAN JOSE DE LOS LLANOS","0508 - QUISQUEYA","0509 - EL VALLE","0510 - GUAYMATE","0511 - VILLA HERMOSA"],
+      "06 - LA VEGA": ["0601 - JOSE CONTRERAS","0602 - CONSTANZA","0603 - JARABACOA","0604 - LA VEGA OESTE","0605 - LA VEGA ESTE","0606 - MOCA","0607 - GASPAR HERNANDEZ","0608 - JAMAO AL NORTE","0609 - SAN VICTOR","0610 - JIMA ABAJO"],
+      "07 - SAN FRANCISCO DE MACORIS": ["0701 - TENARES","0702 - SALCEDO","0703 - CASTILLO","0704 - VILLA RIVA","0705 - SAN FRANCISCO DE MACORIS SUR-E","0706 - SAN FRANCISCO DE MACORIS NOR-O","0707 - VILLA TAPIA"],
+      "08 - SANTIAGO": ["0801 - SAN JOSE DE LAS MATAS","0802 - JANICO","0803 - SANTIAGO SUR-ESTE","0804 - SANTIAGO NOROESTE","0805 - SANTIAGO CENTRO-OESTE","0806 - SANTIAGO NORESTE","0807 - VILLA BISONO (NAVARRETE)","0808 - LICEY AL MEDIO","0809 - TAMBORIL","0810 - VILLA GONZALEZ"],
+      "09 - MAO": ["0901 - MAO","0902 - ESPERANZA","0903 - SAN IGNACIO DE SABANETA","0904 - MONCION","0905 - LAGUNA SALADA","0906 - VILLA LOS ALMACIGOS"],
+      "10 - SANTO DOMINGO": ["1001 - VILLA MELLA","1002 - SABANA PERDIDA","1003 - SANTO DOMINGO NORESTE","1004 - SANTO DOMINGO ORIENTAL","1005 - BOCA CHICA","1006 - MENDOZA","1007 - SAN ANTONIO DE GUERRA"],
+      "11 - PUERTO PLATA": ["1101 - SOSUA","1102 - PUERTO PLATA","1103 - IMBERT","1104 - LUPERON","1105 - ALTAMIRA","1106 - EL MAMEY","1107 - VILLA ISABELA"],
+      "12 - HIGUEY": ["1201 - HIGUEY","1202 - SAN RAFAEL DEL YUMA","1203 - EL SEIBO","1204 - MICHES"],
+      "13 - MONTE CRISTI": ["1301 - MONTE CRISTI","1302 - GUAYUBIN","1303 - VILLA VASQUEZ","1304 - DAJABON","1305 - LOMA DE CABRERA","1306 - RESTAURACION"],
+      "14 - NAGUA": ["1401 - NAGUA","1402 - CABRERA","1403 - RIO SAN JUAN","1404 - SAMANA","1405 - SANCHEZ","1406 - EL FACTOR","1407 - LAS TERRENAS"],
+      "15 - SANTO DOMINGO": ["1501 - LOS ALCARRIZOS","1502 - SANTO DOMINGO CENTRO","1503 - SANTO DOMINGO SURCENTRAL","1504 - SANTO DOMINGO NOROESTE","1505 - HERRERA","1506 - PEDRO BRAND"],
+      "16 - COTUI": ["1601 - COTUI","1602 - FANTINO","1603 - CEVICOS","1604 - BONAO SUROESTE","1605 - PIEDRA BLANCA","1606 - BONAO NORDESTE","1607 - VILLA LA MATA"],
+      "17 - MONTE PLATA": ["1701 - YAMASA","1702 - MONTE PLATA","1703 - BAYAGUANA","1704 - SABANA GRANDE DE BOYA","1705 - PERALVILLO"],
+      "18 - BAORUCO": ["1801 - NEIBA","1802 - TAMAYO","1803 - VILLA JARAGUA","1804 - JIMANI","1805 - DUVERGE"]
+    };
+
+    const regionalSelect = document.getElementById('regionalSelect');
+    const distritoSelect = document.getElementById('distritoSelect');
+
+    Object.keys(regionalesDistritos).forEach(regional => {
+      const option = document.createElement('option');
+      option.value = regional;
+      option.textContent = regional;
+      regionalSelect.appendChild(option);
+    });
+
+    regionalSelect.addEventListener('change', function() {
+      distritoSelect.innerHTML = '<option value="">Seleccione distrito</option>';
+      const distritos = regionalesDistritos[this.value] || [];
+      distritos.forEach(distrito => {
+        const option = document.createElement('option');
+        option.value = distrito;
+        option.textContent = distrito;
+        distritoSelect.appendChild(option);
+      });
+    });
+
+    const centrosPorDistrito = {
+      "0901 - MAO": ["CENTRO EDUCATIVO LOS QUERUBINES J.E.E. 09-01","CENTRO EDUCATIVO PADRE CESAR DAL SANTOS J.E.E. 09-01","ESC PRIM SAGRADO CORAZON DE JESUS MAT 09-01","ESC PRIM JUAN PABLO DUARTE J.E. 09-01","ESC PRIM RAMON EMILIO ESPINAL VARGAS J.E. 09-01","ESC LABORAL FIDELINA REYES MAT 09-01","ESC PRIM DESIDERIO ARIAS MAT/VESP 09-01","ESC PRIM PADRE LUIS VARIARA MAT 09-01","COLEGIO SANTA TERESITA MAT 09-01","ESC PRIM MAT YERBA DE GUINEA 09-01","ESC PRIM VESP YERBA DE GUINEA 09-01","ESC PRIM JUAN ISIDRO PEREZ MAT 09-01","ESC PRIM JUAN ISIDRO PEREZ VESP 09-01","ESC PRIM SIBILA MAT 09-01","ESC PRIM DR JERONIMO GRACIANO DE LOS SANTOS VESP 09-01","ESC PRIM SIBILA VESP 09-01","ESC PRIM PAUL P HARRIS MAT 09-01","ESC PRIM PAUL P HARRIS VESP 09-01","ESC PRIM LOS CAYUCOS MAT 09-01","ESC PRIM LOS CAYUCOS VESP 09-01","ESC PRIM HATO NUEVO MAT 09-01","ESC PRIM HATO NUEVO VESP 09-01","ESC PRIM ENTRADA DE MAO MAT 09-01","ESC PRIM ENTRADA DE MAO VESP 09-01","ESC PRIM TAITABON MAT 09-01","ESC PRIM LAGUNETA MAT 09-01","ESC PRIM LAGUNETA VESP 09-01","ESC PRIM BATEY LAGUNETA MAT 09-01","ESC PRIM BORUCO MAT 09-01","ESC PRIM LOS QUEMADOS MAT 09-01","ESC PRIM LOS QUEMADOS VESP 09-01","ESC PRIM TIERRA FRIA AFUERA MAT 09-01","ESC PRIM TIERRA FRIA VESP 09-01","ESC PRIM LOS MARTINEZ VESP 09-01","ESC PRIM TIERRA FRIA ADENTRO MAT 09-01","ESC PRIM DOLORES VIUDA BOGAERT MAT 09-01","ESC PRIM DOLORES VIUDA BOGAERT VESP 09-01","ESC PRIM JHON F KENNEDY MAT 09-01","ESC PRIM JHON F KENNEDY VESP 09-01","ESC PRIM SABANA GRANDE MAT 09-01","ESC PRIM SABANA GRANDE VESP 09-01","ESC PRIM GURABO AFUERA MAT 09-01","ESC PRIM EL CERCADO MAT 09-01","ESC PRIM LA CAIDA MAT 09-01","ESC PRIM DR JERONIMO GRACIANO DE LOS SANTOS MAT 09-01","ESC PRIM TIERRA SECA MAT 09-01","ESC PRIM GURABO AFUERA VESP 09-01","ESC PRIM MAO ADENTRO MAT 09-01","ESC PRIM FRANCISCO DEL ROSARIO SANCHEZ VESP 09-01","ESC PRIM MELVIN JONE MAT 09-01","ESC PRIM EL PUENTE VESP 09-01","ESC PRIM BAGUAZUMA MAT 09-01","ESC PRIM BORUCO VESP 09-01","ESC PRIM EL HIGUERITO PEÑUELA MAT 09-01","ESC VESP DE EDUC CARCELARIA 09-01","ESC PRIM HIGUERITO PEÑUELA MAT 09-01","ESC PRIM EL REMATE MAT 09-01","ESC PRIM AMINA MAT 09-01","ESC PRIM AMINA VESP 09-01","ESC PRIM BATEY AMINA MAT 09-01","ESC PRIM BATEY AMINA VESP 09-01","ESC PRIM ENRIQUILLO MAT 09-01","ESC PRIM ENRIQUILLO VESP 09-01","ESC PRIM MOTOCROSS MAT 09-01","ESC PRIM GRAL BENITO MONCION MAT 09-01","ESC PRIM GRAL BENITO MONCION VESP 09-01","ESC PRIM MOTOCROSS VESP 09-01","ESC PRIM LA YAGUA MAT 09-01","ESC PRIM LA YAGUA VESP 09-01","ESC PRIM MELVIN JONE VESP 09-01","ESC PRIM LA CAIDA VESP 09-01","ESC PRIM MAO ADENTRO VESP 09-01","ESC PRIM DR. JOSE FRANCISCO PEÑA GOMEZ MAT 09-01","ESC PRIM TIERRA SECA VESP 09-01","ESC PRIM BATEY HATICO MAT 09-01","ESC PRIM MARIA AUXILIADORA VESP 09-01","ESC PRIM GRACIELA REYES TINEO MAT 09-01","ESC PRIM GUATAPANAL MAT 09-01","ESC PRIM GRACIELA REYES TINEO VESP 09-01","ESC PRIM GUATAPANAL VESP 09-01","ESC PRIM BATEY HATICO VESP 09-01","ESC PRIM JINAMAGAO ARRIBA MAT 09-01","ESC PRIM MARIA AUXILIADORA MAT 09-01","ESC PRIM JINAMAGAO VESP 09-01","ESC PRIM POTRERO MAT 09-01","ESC PRIM POTRERO VESP 09-01","ESC PRIM HUNDIDERA MAT 09-01","ESC PRIM JUAN DE JESUS REYES VESP 09-01","COLEGIO EVANGELICO SIMON BOLIVAR MAT 09-01","ESC PRIM SIMON BOLIVAR VESP 09-01","ORGANIZACION DOMINICANA DE CIEGOS-NOROESTE VESP 09-01","ESC PRIM TAITABON VESP 09-01","ESC PRIM LOS MELLIZOS MAT/VESP 09-01","CENTRO EDUCATIVO EN ARTES PROF. JUAN DE JESUS REYES 09-01","LIC SEC NOCT JUAN DE JESUS REYES 09-01","LIC SEC VESP CESAR NICOLAS PENSON 09-01","LIC SEC MAT LEONIDAS RICARDO ROMAN 09-01","LIC SEC MAT ORLANDO MARTINEZ 09-01","LIC SEC MAT DR JOSE FRANCISCO PEÑA GOMEZ 09-01","INSTITUTO POLITECNICO NOROESTE 09-01","LIC SEC VESP PUEBLO NUEVO 09-01","LIC SEC VESP JUAN DE JESUS REYES 09-01","TEVECENTRO DE MEDIA TAITABON 09-01","LIC TECNICO SAGRADO CORAZON DE JESUS 09-01","ESC NOCT JUAN ISIDRO PEREZ 09-01","ESC NOCT PERICLES BIENVENIDO DISLA 09-01","ESC LABORAL FIDELINA REYES VESP 09-01","ESC MAT DE EDUC CARCELARIA 09-01","ESC NOCT PAUL P HARRIS 09-01","ESC NOCT GUATAPANAL 09-01","INSTITUTO DE ENSEÑANZA DE NIÑOS ESPECIALES 09-01","POLITECNICNO PADRE LUIS VARIADA 09-01","LIC SEC LOS QUERUBINES J.E.E. 09-01","LIC SEC PORFIRIO GUTIERREZ J.E.E. 09-01","LIC SEC EUGENIO MARIA DE HOSTOS J.E.E. 09-01","LIC SEC PROF. ALTAGRACIA CAMELIA DISLA RODRIGUEZ J.E.E. 09-01","LICEO EXPERIMENTAL HEROES DE LA BARRANQUITA J.E.E. 09-01"],
+      "0902 - ESPERANZA": ["ESC PRIM PROF. MARIA LUISA ABREU GUZMAN J.E. 09-02","ESC PRIM PROF. TEODORA ACOSTA SOSA J.E. 09-02","ESC PRIM ESTONI ROQUE CUEVAS ROJAS J.E. 09-02","ESC PRIM BEJUCAL MAT 09-02","ESC PRIM DOÑA ELSA CABRERA MAT 09-02","ESC PRIM DOÑA ELSA CABRERA VESP 09-02","ESC PRIM FRANCISCO DEL ROSARIO SANCHEZ MAT 09-02","ESC PRIM EL PUENTE MAT 09-02","ESC PRIM JOSE FRANCISCO PEÑA GOMEZ MAT 09-02","ESC PRIM CRISTOBAL COLON MAT 09-02","ESC PRIM CRISTOBAL COLON VESP 09-02","ESC PRIM JUAN BOSCH MAT 09-02","ESC PRIM JUAN BOSCH VESP 09-02","ESC PRIM CRUCE DE ESPERANZA MAT 09-02","ESC PRIM CRUCE DE ESPERANZA VESP 09-02","ESC PRIM BATEY DUARTE MAT 09-02","ESC PRIM LA YAGUITA MAT 09-02","ESC PRIM LA YAGUITA VESP 09-02","ESC PRIM PEÑUELA ADENTRO VESP 09-02","ESC PRIM PEÑUELA ADENTRO MAT 09-02","ESC PRIM BATEY DUARTE VESP 09-02","ESC PRIM BATEY LIBERTAD MAT 09-02","ESC PRIM BATEY LIBERTAD VESP 09-02","ESC PRIM EL PALO 09-02","ESC PRIM PROF. ALIDA ANTONIA TORRES ESPINAL J.E.E. 09-02","ESC PRIM BATEY 1 VESP 09-02","ESC PRIM PEÑUELA AFUERA MAT 09-02","LIC SEC MAT MATIAS RAMON MELLA 09-02","ESC PRIM MATIAS RAMON MELLA VESP 09-02","ESC PRIM PEÑUELA AFUERA VESP 09-02","ESC PRIM EL BUEN SAMARITANO MAT 09-02","ESC PRIM EL BUEN SAMARITANO VESP 09-02","ESC PRIM ERCILIA PEPIN MAT 09-02","ESC PRIM LOS CALLEJONES MAT 09-02","ESC PRIM PRIMERO DE MAYO MAT 09-02","ESC PRIM DAMAJAGUA MAT 09-02","ESC PRIM DAMAJAGUA VESP 09-02","ESC PRIM ERCILIA PEPIN VESP 09-02","ESC PRIM PRIMERO DE MAYO VESP 09-02","ESC PRIM OJO DE AGUA MAT 09-02","ESC PRIM MAIZAL MAT 09-02","ESC PRIM MAIZAL VESP 09-02","ESC PRIM LA CUMBRE MAT 09-02","ESC PRIM LOMA DE MAIMON VESP 09-02","ESC PRIM MAIMON MAT 09-02","ESC PRIM MAIMON VESP 09-02","ESC PRIM BUEN HOMBRE MAT 09-02","ESC PRIM EL PALO VESP 09-02","ESC PRIM JICOME ARRIBA MAT 09-02","ESC PRIM JICOME ARRIBA VESP 09-02","ESC PRIM PARADERO MAT 09-02","ESC PRIM PARADERO VESP 09-02","ESC PRIM JUAN PABLO DUARTE MAT 09-02","ESC PRIM JUAN PABLO DUARTE VESP 09-02","ESC PRIM EL PARAISO MAT 09-02","ESC PRIM SALOME UREÑA MAT 09-02","CENTRO PARA LA NIÑEZ REGION NOROESTE MAT 09-02","ESC PRIM SALOME UREÑA VESP 09-02","ESC PRIM HERMANAS MIRABAL MAT 09-02","ESC PRIM LOMA DEL AGUACATE MAT 09-02","ESC PRIM HERMANAS MIRABAL VESP 09-02","ESC PRIM PEDRO HENRIQUEZ UREÑA VESP 09-02","ESC PRIM EL LLANO VESP 09-02","ESC PRIM BUENA ESPERANZA MAT 09-02","ESC PRIM PEDRO HENRIQUEZ UREÑA MAT 09-02","ESC PRIM EL PARAISO VESP 09-02","ESC PRIM PROF. JOSE ANTONIO ESPINAL LUGO J.E.E. 09-02","TEVECENTRO DE MEDIA PARADERO 09-02","LIC SEC NOCT FRANCISCO DEL ROSARIO SANCHEZ 09-02","LIC SEC NOCT AURELIO MARIA SANTIAGO ESPERANZA 09-02","LIC SEC NOCT ENRIQUILLO 09-02","LIC SEC NOCT PEDRO HENRIQUEZ UREÑA 09-02","LIC SEC VESP MAIZAL 09-02","CENTRO EDUCATIVO EN ARTES MARIA BERNARDINA PASCUAL Y VENTURA 09-02","ESCUELA EDUCACION ESPECIAL PEDRO HENRIQUEZ UREÑA VESP 09-02","ESC NOCT MAIZAL 09-02","ESC NOCT CRISTOBAL COLON 09-02","ESC NOCT PROF JUAN BOSCH 09-02","LIC SEC VESP MATIAS RAMON MELLA 09-02","LIC SEC PROF. TEOFILO VALENZUELA ARIAS J.E.E. 09-02","LIC SEC MARIA LEAQUINA RODRIGUEZ J.E.E. 09-02","ESC PRIM PROF. JOSE ARTURO PEÑA TEJADA J.E.E. 09-02","LIC SEC PROF. JOSE ARTURO PEÑA TEJADA J.E.E. 09-02","ESCUELA LABORAL PROF. LIDIA ARGENTINA CEPIN MAYOR MAT/VESP 09-02"],
+      "0903 - SAN IGNACIO DE SABANETA": ["ESC PRIM PROF. NERYS DAVID ECHAVARRIA RODRIGUEZ J.E.E. 09-03","ESC PRIM EL RINCON VESP 09-03","ESC PRIM EL RINCON MAT 09-03","ESC PRIM ARROYO SECO MAT 09-03","ESC PRIM BOCA DE AMINILLA MAT 09-03","ESC PRIM LOS CERROS 09-03","ESC PRIM MARIA PEREZ TORRES MAT 09-03","ESC PRIM JOSE MARIA SERRA MAT 09-03","ESC PRIM JOSE MARIA SERRA VESP 09-03","ESC PRIM MATA DE JOBO MAT 09-03","ESC PRIM MATA DEL JOBO VESP 09-03","ESC PRIM PROF CLARA LUZ LORA MAT 09-03","ESC PRIM PROF CLARA LUZ LORA VESP 09-03","ESC PRIM LOS CAJUILES VESP 09-03","ESC PRIM NOEMI EVANGELISTA PEREZ TEJADA MAT 09-03","ESC PRIM NOEMI EVANGELISTA PEREZ TEJADA VESP 09-03","ESC PRIM ANA JOAQUINA HIDALGO MAT 09-03","ESC NOCT ANA JOAQUINA HIDALGO 09-03","ESC PRIM ANA JOAQUINA HIDALGO VESP 09-03","ESC PRIM DR DARIO GOMEZ MAT 09-03","ESC PRIM ARROYO BLANCO MAT 09-03","ESC PRIM EL VALLECITO MAT 09-03","ESC PRIM EL VALLECITO VESP 09-03","ESC PRIM EL RODEO MAT 09-03","ESC PRIM EL RODEO VESP 09-03","ESC PRIM LIBRADO EUGENIO BELLIARD MAT 09-03","ESC PRIM LIBRADO EUGENIO BELLIARD VESP 09-03","ESC PRIM SAN JOSE MAT 09-03","ESC PRIM MIGUEL PAULINO BAEZ MAT 09-03","ESC PRIM LOS JOBOS MAT 09-03","ESC PRIM LOS JOBOS VESP 09-03","ESC PRIM LA LIMA MAT 09-03","ESC PRIM LA LIMA VESP 09-03","ESC PRIM GENERAL GREGORIO LUPERON MAT 09-03","ESC PRIMGENERAL GREGORIO LUPERON VESP 09-03","ESC PRIM LA GUAMA MAT 09-03","ESC PRIM LA MANGUANITA MAT 09-03","ESC PRIM DOMINGO ANTONIO PERALTA SERRATA MAT 09-03","ESC PRIM DOMINGO ANTONIO PERALTA SERRATA VESP 09-03","ESC PRIM PROF. BEATRIZ RODRIGUEZ DE QUIÑONES J.E.E. 09-03","ESC PRIM RAMON MARIA PACHECO MAT 09-03","ESC PRIM PROF. BEATRIZ RODRIGUEZ DE QUIÑONES VESP 09-03","ESC PRIM LOS INGENITOS MAT 09-03","ESC PRIM LOS INGENITOS VESP 09-03","ESC PRIM PEDRO MARIA SANTANA PERALTA MAT 09-03","ESC PRIM PEDRO MARIA SANTANA PERALTA VESP 09-03","ESC PRIM CAIMITO MAT 09-03","ESC PRIM CAIMITO VESP 09-03","ESC PRIM AMBROCIO ECHAVARRIA ALMONTE MAT 09-03","ESC PRIM AMBROCIO ECHAVARRIA ALMONTE VESP 09-03","ESC PRIM EL GUANAL MAT 09-03","ESC PRIM EL GUANAL VESP 09-03","ESC PRIM CERCADILLOS ARRIBA VESP 09-03","ESC PRIM LA TARANA MAT 09-03","ESC PRIM PEDRO CELESTINO CABRERA PEÑA VESP 09-03","ESC PRIM PEDRO CELESTINO CABRERA PEÑA MAT 09-03","ESC PRIM MAT BABOSO DIST 09-03","ESC PRIM ARROYO BLANCO VESP 09-03","ESC PRIM MONTE LLANO MAT 09-03","ESC PRIM SAN JOSE VESP 09-03","ESC PRIM CERCADILLOS ARRIBA MAT 09-03","ESC PRIM LOS PLANES ARRIBA MAT 09-03","ESC PRIM LOS PLANES ARRIBA VESP 09-03","ESC PRIM EL ANICETAL MAT 09-03","ESC PRIM JOSE VIRGILIO GUZMAN TEJADA MAT 09-03","ESC PRIM JOSE VIRGILIO GUZMAN TEJADA VESP 09-03","ESC PRIM SABANA DE INAJE MAT 09-03","ESC PRIM SAN IGNACIO DE LOYOLA MAT 09-03","ESC PRIM SAN IGNACIO DE LOYOLA VESP 09-03","COLEGIO FRANCISCO BUENO ZAPATA MAT/VESP 09-03","CENTRO CAPACITACION INFORMATICA - C.C.I 09-03","LIC SEC MAT LIBRADO EUGENIO BELLIARD 09-03","LIC SEC NOCT SABANETA 09-03","TEVECENTRO DE MEDIA LOS JOBOS MAT 09-03","LIC SEC MAT ARROYO BLANCO 09-03","TEVECENTRO DE MEDIA LAS CAOBAS MAT 09-03","ESC DE CAPACITACION FEMENINA DE SANTIAGO RODRIGUEZ 09-03","LIC SEC JORGE STERLING HECHAVARIA MENDOZA J.E. 09-03"],
+      "0904 - MONCION": ["ESC PRIM PROF. JUAN BOSCH J.E. 09-04","ESC PRIM LA LEONOR MAT 09-04","ESC PRIM EL RODEO VESP 09-04","ESC PRIM LA TRINITARIA MAT 09-04","ESC PRIM LA TRINITARIA VESP 09-04","ESC PRIM ANASTACIO VALLE MAT 09-04","ESC PRIM ANASTACIO VALLE VESP 09-04","ESC PRIM LA CACIQUE MAT 09-04","ESC PRIM VELADERO MAT 09-04","ESC PRIM LA CACIQUE VESP 09-04","ESC PRIM HATO VIEJO MAT 09-04","ESC PRIM CAÑADA GRANDE MAT 09-04","ESC PRIM CAÑADA GRANDE VESP 09-04","ESC PRIM LA CIDRA MAT 09-04","ESC PRIM LA LEONOR VESP 09-04","ESC PRIM EL AGUACATE MAT 09-04","ESC PRIM EL AGUACATE VESP 09-04","ESC PRIM EL MONTAZO VESP 09-04","ESC PRIM LAGUNA DE GENOVI MAT 09-04","ESC PRIM LAGUNA DE CENOVI VESP 09-04","ESC PRIM CENOVI MAT 09-04","ESC PRIM CENOVI VESP 09-04","ESC PRIM BIENVENIDO GUZMAN VESP 09-04","ESC PRIM GURABO MAT 09-04","ESC PRIM GURABO VESP 09-04","ESC PRIM LAS MESETAS MAT 09-04","ESC PRIM LAS MESETAS VESP 09-04","ESC PRIM DURAN VESP 09-04","ESC PRIM DURAN MAT 09-04","ESC PRIM LOMA DEL DAJAO MAT 09-04","ESC PRIM LOMA DEL DAJAO VESP 09-04","ESC PRIM CLAVIJO ARRIBA MAT 09-04","LIC SEC ETANISLAO LIBERATO BAEZ J.E.E. 09-04","ESC PRIM CLAVIJO ABAJO MAT 09-04","ESC LABORAL DOMESTICA SAN ANTONIO 09-04","ESC PRIM CLAVIJO ABAJO VESP 09-04","TEVECENTRO CLAVIJO ARRIBA MAT 09-04","LIC SEC MAT JUAN PABLO DUARTE 09-04","TEVECENTRO DE MEDIA EL AGUACACTE 09-04","LIC SEC NOCT SALOME UREÑA DE HENRIQUEZ 09-04","TEVECENTRO DE MEDIA LA CACIQUE MAT 09-04","TEVECENTRO LAS MESETAS VESP 09-04","ESC NOCT LA TRINITARIA 09-04"],
+      "0905 - LAGUNA SALADA": ["ESC PRIM JOSE A RODRIGUEZ MAT 09-05","ESC PRIM JOSE A RODRIGUEZ VESP 09-05","ESC PRIM MARIA TRINIDAD SANCHEZ MAT 09-05","ESC PRIM LA CAYA MAT 09-05","ESC PRIM LA CAYA VESP 09-05","ESC PRIM EL CARRIL ARRIBA MAT 09-05","ESC PRIM LOMA DE GUAYACANES VESP 09-05","ESC PRIM JACINTO DE LA CONCHA MAT 09-05","ESC PRIM JACINTO DE LA CONCHA VESP 09-05","ESC PRIM JAIBON MAT 09-05","ESC PRIM JAIBON VESP 09-05","ESC PRIM PALO AMARILLO MAT 09-05","ESC PRIM PALO AMARILLO VESP 09-05","ESC PRIM PUEBLO NUEVO MAT 09-05","ESC PRIM PUEBLO NUEVO VESP 09-05","ESC PRIM GUILLERMO RAFAEL PERALTA SANDY MAT 09-05","ESC PRIM GUILLERMO RAFAEL PERALTA SANDY VESP 09-05","ESC PRIM MELITON SANCHEZ MAT 09-05","ESC PRIM MELITON SANCHEZ VESP 09-05","ESC PRIM RANCHETE MAT 09-05","ESC PRIM RANCHETE VESP 09-05","ESC PRIM LOMA DE GUAYACANES MAT 09-05","ESC PRIM POZO PRIETO MAT 09-05","ESC PRIM EL CHORRO MAT 09-05","ESC PRIM OJO DE AGUA MAT 09-05","ESC PRIM OJO DE AGUA VESP 09-05","ESC PRIM GUAYACANES ADENTRO MAT 09-05","ESC PRIM GUAYACANES ADENTRO VESP 09-05","ESC PRIM FELICIANO ARAGONES MAT 09-05","LIC SEC VESP LA CAYA J.E.E. 09-05","LIC SEC CRUCE DE GUAYACANES J.E.E. 09-05","LIC SEC EUGENIO MARIA DE HOSTOS J.E.E. 09-05","LIC SEC MAT ANTONIO GUZMAN FERNANDEZ J.E.E. 09-05","ESC NOCT JACINTO DE LA CONCHA 09-05","ESC NOCT JAIBON 09-05","CENTRO EDUCATIVO REV. EDUVIGIS AURELIO DIAZ NUÑEZ J.E.E. 09-05","ESCUELA LABORAL PROF. MARIA VENECIA CABRERA MORONTA MAT/VESP 09-05"],
+      "0906 - VILLA LOS ALMACIGOS": ["ESC PRIM BOCA DE LA VEREDA MAT 09-06","ESC PRIM BOCA DE LA VEREDA VESP 09-06","ESC PRIM CARLOS GONZALEZ NUÑEZ J.E.E. 09-06","ESC PRIM CARLOS GONZALEZ NUÑEZ VESP 09-06","ESC PRIM EL NARANJITO J.E.E. 09-06","ESC PRIM INAJE J.E.E. 09-06","ESC PRIM JUAN FRANCISCO GARCIA FERNANDEZ J.E.E. 09-06","ESC PRIM JUAN FRANCISCO GARCIA FERNANDEZ VESP 09-06","ESC PRIM FAUSTA MERCEDES TEJADA J.E.E. 09-06","ESC PRIM FAUSTA MERCEDES TEJADA VESP 09-06","ESC PRIM LA CEIBA J.E.E. 09-06","ESC PRIM LA CEIBA VESP 09-06","ESC PRIM LOS RODRIGUEZ J.E.E. 09-06","ESC PRIM LA GINITA J.E.E. 09-06","ESC PRIM LA GINITA VESP 09-06","ESC PRIM EL JENGIBRE J.E.E. 09-06","ESC PRIM PALMA LARGA J.E.E. 09-06","ESC PRIM PALMA LARGA VESP 09-06","ESC PRIM RAFAEL CESPEDES FERNANDEZ VESP 09-06","ESC PRIM RAFAEL CESPEDES FERNANDEZ J.E.E. 09-06","ESC PRIM ARROYITO MALO VESP 09-06","ESC PRIM EL DAJAO J.E.E. 09-06","ESC PRIM PROF. TIGILDA VARGAS J.E.E. 09-06","ESC PRIM PROF. TIGILDA VARGAS VESP 09-06","ESC PRIM LA PIONIA MAT 09-06","ESC PRIM EL NARANJITO MAT 09-06","ESC PRIM EL RESBALOSO J.E.E. 09-06","ESC PRIM DR. JOSE FRANCISCO PEÑA GOMEZ J.E.E. 09-06","LIC SEC PEDRO HENRIQUEZ UREÑA J.E.E. 09-06","TEVECENTRO DE MEDIA LA GINITA 09-06"]
+    };
+
+    function normalizarCentro(nombre) {
+      return nombre
+        .replace(/\s+/g, ' ')
+        .replace(/ESC PRIMGENERAL/g, 'ESC PRIM GENERAL')
+        .replace(/AGUACACTE/g, 'AGUACATE')
+        .replace(/POLITECNICNO/g, 'POLITECNICO')
+        .replace(/VARIADA/g, 'VARIARA')
+        .replace(/HECHAVARIA/g, 'ECHAVARRIA')
+        .replace(/JHON F KENNEDY/g, 'JOHN F. KENNEDY')
+        .replace(/DR JERONIMO/g, 'DR. JERONIMO')
+        .replace(/DR JOSE/g, 'DR. JOSE')
+        .replace(/PROF CLARA/g, 'PROF. CLARA')
+        .replace(/PROF JUAN BOSCH/g, 'PROF. JUAN BOSCH')
+        .trim();
+    }
+
+    Object.keys(centrosPorDistrito).forEach(distrito => {
+      centrosPorDistrito[distrito] = [...new Set(centrosPorDistrito[distrito].map(normalizarCentro))]
+        .sort((a, b) => a.localeCompare(b, 'es'));
+    });
+
+    const centroSelect = document.getElementById('centroSelect');
+
+    distritoSelect.addEventListener('change', function() {
+      centroSelect.innerHTML = '<option value="">Seleccione centro educativo</option>';
+      const centros = centrosPorDistrito[this.value] || [];
+      centros.forEach(centro => {
+        const option = document.createElement('option');
+        option.value = centro;
+        option.textContent = centro;
+        centroSelect.appendChild(option);
+      });
+    });
+
+    const rubricaBody = document.getElementById('rubricaBody');
+
+    aspectos.forEach((texto, i) => {
+      const tr = document.createElement('tr');
+      let radios = '';
+      [4,3,2,1,0].forEach(valor => {
+        radios += `<td class="puntuacion"><input type="radio" name="aspecto_${i+1}" value="${valor}"></td>`;
+      });
+      tr.innerHTML = `
+        <td class="aspecto">${texto}</td>
+        ${radios}
+        <td class="observacion-col"><textarea class="obs-rubrica" name="observacion_${i+1}"></textarea></td>
+      `;
+      rubricaBody.appendChild(tr);
+    });
+  </script>
+</body>
+</html>
