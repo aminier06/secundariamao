@@ -652,8 +652,74 @@
 
     document.getElementById('formularioAcompanamiento').addEventListener('submit', function(e) {
       e.preventDefault();
-      alert('Formulario enviado correctamente.');
-      this.reset();
+
+      const obtenerValorRadio = (name) => {
+        const seleccionado = document.querySelector(`input[name="${name}"]:checked`);
+        return seleccionado ? seleccionado.value : "";
+      };
+
+      const datos = {
+        Fecha_hora: document.querySelector('[name="fecha_hora"]').value,
+        Regional: document.getElementById('regionalSelect').value,
+        Distrito: document.getElementById('distritoSelect').value,
+        Centro_educativo: document.getElementById('centroSelect').value,
+        Codigo: document.querySelector('[name="codigo"]').value,
+        Docente_acompanado: document.querySelector('[name="docente_acompanado"]').value,
+        Asignatura: document.querySelector('[name="asignatura"]').value,
+        Coordinador: document.querySelector('[name="coordinador"]').value,
+        Tanda: obtenerValorRadio('tanda'),
+        Grado: document.querySelector('[name="grado"]').value,
+        Seccion: document.querySelector('[name="seccion"]').value,
+        Matricula: document.querySelector('[name="matricula"]').value,
+
+        IND1: obtenerValorRadio('aspecto_1'),
+        IND2: obtenerValorRadio('aspecto_2'),
+        IND3: obtenerValorRadio('aspecto_3'),
+        IND4: obtenerValorRadio('aspecto_4'),
+        IND5: obtenerValorRadio('aspecto_5'),
+        IND6: obtenerValorRadio('aspecto_6'),
+        IND7: obtenerValorRadio('aspecto_7'),
+        IND8: obtenerValorRadio('aspecto_8'),
+        IND9: obtenerValorRadio('aspecto_9'),
+        IND10: obtenerValorRadio('aspecto_10'),
+        IND11: obtenerValorRadio('aspecto_11'),
+        IND12: obtenerValorRadio('aspecto_12'),
+        IND13: obtenerValorRadio('aspecto_13'),
+        IND14: obtenerValorRadio('aspecto_14'),
+        IND15: obtenerValorRadio('aspecto_15'),
+        IND16: obtenerValorRadio('aspecto_16'),
+        IND17: obtenerValorRadio('aspecto_17'),
+        IND18: obtenerValorRadio('aspecto_18'),
+        IND19: obtenerValorRadio('aspecto_19'),
+        IND20: obtenerValorRadio('aspecto_20'),
+
+        Dificultades_implementacion: document.querySelector('[name="dificultades"]').value,
+        Fortalezas_identificadas: document.querySelector('[name="fortalezas"]').value,
+        Efectividad_actividades: document.querySelector('[name="efectividad"]').value,
+        Observaciones_generales: document.querySelector('[name="observaciones_generales"]').value
+      };
+
+      fetch('https://script.google.com/macros/s/AKfycbwyY3WtJnW6kdmrkTGlBY4h80M6pwxlF9WsLjGpD42klgEJOcbqJQb0dn6CPnYpB7g/exec', {
+        method: 'POST',
+        body: JSON.stringify(datos),
+        headers: {
+          'Content-Type': 'application/json'
+        }
+      })
+        .then(response => response.json())
+        .then(resultado => {
+          if (resultado.ok) {
+            alert('Formulario enviado correctamente.');
+            document.getElementById('formularioAcompanamiento').reset();
+          } else {
+            alert('Ocurrió un error al guardar los datos.');
+            console.error(resultado);
+          }
+        })
+        .catch(error => {
+          alert('No fue posible conectar con Google Sheets.');
+          console.error(error);
+        });
     });
 
     aspectos.forEach((texto, i) => {
