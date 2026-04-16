@@ -532,6 +532,7 @@
       </table>
 
       <div class="acciones">
+        <button type="submit">Enviar formulario</button>
         <button type="button" onclick="window.print()">Imprimir / Guardar PDF</button>
         <button type="reset" class="secundario">Limpiar formulario</button>
       </div>
@@ -648,6 +649,12 @@
     });
 
     const rubricaBody = document.getElementById('rubricaBody');
+
+    document.getElementById('formularioAcompanamiento').addEventListener('submit', function(e) {
+      e.preventDefault();
+      alert('Formulario enviado correctamente.');
+      this.reset();
+    });
 
     aspectos.forEach((texto, i) => {
       const tr = document.createElement('tr');
